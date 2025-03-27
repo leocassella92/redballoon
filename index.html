@@ -68,14 +68,18 @@
         <div class="col-md-8 col-lg-6">
             <div class="card">
                 <h2 class="text-center mb-4">🤖 Agente Red Balloon</h2>
+                <div class="mb-3">
+                    <input type="password" class="form-control" id="senha" placeholder="Digite a senha de acesso">
+                </div>
                 <div class="comandos">
                     <strong>Comandos disponíveis:</strong>
                     <ul class="mt-2">
                         <li><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas.</li>
-                        <li><strong>Métricas da campanha:</strong> digite o nome da campanha seguido da data de início e fim.</li>
+                        <li><strong>Métricas da campanha:</strong> digite o nome da campanha seguido da data de início e fim ou "últimos 7 dias"/"últimos 30 dias".</li>
                     </ul>
                     <div class="example">
                         <strong>Exemplo:</strong><br>
+                        <code>red balloon SP | 2025.1 | performance | lead | mkt4 últimos 7 dias</code><br>
                         <code>red balloon SP | 2025.1 | performance | lead | formulários nativos | mkt4 20/03/2025 27/03/2025</code>
                     </div>
                 </div>
@@ -92,7 +96,13 @@
 <script>
     async function enviarPrompt() {
         const prompt = document.getElementById('prompt').value;
+        const senha = document.getElementById('senha').value;
         const resposta = document.getElementById('resposta');
+
+        if (senha !== 'projetoredballoon') {
+            resposta.innerHTML = `<div class="alert alert-danger">❌ Senha incorreta.</div>`;
+            return;
+        }
 
         resposta.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
 
