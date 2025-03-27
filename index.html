@@ -7,33 +7,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #ff5e62, #ff9966);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         .card {
-            margin-top: 50px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,.1);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
         }
         .btn-primary {
             background-color: #FF3B3F;
             border: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
         }
         .btn-primary:hover {
             background-color: #e03538;
+            transform: scale(1.05);
         }
         h2 {
-            color: #333;
+            color: #FF3B3F;
+            font-weight: bold;
         }
         #resposta {
             margin-top: 20px;
             font-size: 1rem;
         }
         .comandos {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-align: center;
-            color: #555;
+            margin-top: 20px;
+            font-size: 0.95rem;
+            color: #444;
+            background-color: #fff3f3;
+            padding: 15px;
+            border-radius: 12px;
+        }
+        .comandos strong {
+            color: #c73232;
+        }
+        .example {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        .input-group input {
+            border-radius: 10px 0 0 10px;
+        }
+        .input-group button {
+            border-radius: 0 10px 10px 0;
         }
     </style>
 </head>
@@ -41,15 +65,22 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h2 class="text-center">🤖 Agente Red Balloon</h2>
+        <div class="col-md-8 col-lg-6">
+            <div class="card">
+                <h2 class="text-center mb-4">🤖 Agente Red Balloon</h2>
                 <div class="comandos">
-                    <strong>Comandos disponíveis:</strong><br>
-                    "Listar Campanhas" - para retornar com todas as campanhas ativas.
+                    <strong>Comandos disponíveis:</strong>
+                    <ul class="mt-2">
+                        <li><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas.</li>
+                        <li><strong>Métricas da campanha:</strong> digite o nome da campanha seguido da data de início e fim.</li>
+                    </ul>
+                    <div class="example">
+                        <strong>Exemplo:</strong><br>
+                        <code>red balloon SP | 2025.1 | performance | lead | formulários nativos | mkt4 20/03/2025 27/03/2025</code>
+                    </div>
                 </div>
-                <div class="input-group my-3">
-                    <input type="text" class="form-control" id="prompt" placeholder="Digite sua solicitação">
+                <div class="input-group my-4">
+                    <input type="text" class="form-control" id="prompt" placeholder="Digite aqui sua solicitação...">
                     <button class="btn btn-primary" onclick="enviarPrompt()">Enviar</button>
                 </div>
                 <div id="resposta" class="text-center"></div>
@@ -76,17 +107,17 @@
 
             if (data.sucesso) {
                 if (data.link) {
-                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br><a href="${data.link}" target="_blank">Abrir lista atualizada</a></div>`;
+                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br><a href="${data.link}" target="_blank">🔗 Abrir lista atualizada</a></div>`;
                 } else if (data.resposta) {
                     resposta.innerHTML = `<div class="alert alert-info">${data.resposta}</div>`;
                 } else {
-                    resposta.innerHTML = '<div class="alert alert-success">Resposta recebida com sucesso!</div>';
+                    resposta.innerHTML = '<div class="alert alert-success">✅ Resposta recebida com sucesso!</div>';
                 }
             } else {
-                resposta.innerHTML = `<div class="alert alert-danger">Erro: ${data.erro}</div>`;
+                resposta.innerHTML = `<div class="alert alert-danger">❌ Erro: ${data.erro}</div>`;
             }
         } catch (e) {
-            resposta.innerHTML = `<div class="alert alert-danger">Erro inesperado: ${e.message}</div>`;
+            resposta.innerHTML = `<div class="alert alert-danger">❌ Erro inesperado: ${e.message}</div>`;
         }
     }
 </script>
