@@ -83,7 +83,8 @@
     }
     #campanhaContainer,
     #datasMetricas,
-    #resumoSelect {
+    #resumoSelect,
+    #resumoDiasBox {
       display: none;
     }
   </style>
@@ -114,6 +115,13 @@
         </div>
         <div class="mb-3 text-start" id="resumoSelect">
           <select class="form-select" id="resumoCampanhaSelect" onchange="preencherPromptResumo()"></select>
+        </div>
+        <div class="mb-3 text-start" id="resumoDiasBox">
+          <label class="form-label"><strong>Resumo dessa campanha dos últimos:</strong></label>
+          <div class="input-group">
+            <input type="number" class="form-control" id="diasResumo" min="1" max="90" value="30" onchange="preencherPromptResumo()">
+            <span class="input-group-text"><strong>dias</strong></span>
+          </div>
         </div>
         <div class="row mb-3 text-start" id="datasMetricas">
           <div class="col">
@@ -176,10 +184,12 @@
     const prompt = document.getElementById("prompt");
     const campanhaContainer = document.getElementById("campanhaContainer");
     const resumoContainer = document.getElementById("resumoSelect");
+    const diasBox = document.getElementById("resumoDiasBox");
     const datas = document.getElementById("datasMetricas");
 
     campanhaContainer.style.display = 'none';
     resumoContainer.style.display = 'none';
+    diasBox.style.display = 'none';
     datas.style.display = 'none';
     prompt.value = "";
 
@@ -188,6 +198,7 @@
       const dropdown = document.getElementById(isResumo ? "resumoCampanhaSelect" : "campanhaSelect");
       const container = isResumo ? resumoContainer : campanhaContainer;
       container.style.display = 'block';
+      if (isResumo) diasBox.style.display = 'block';
       dropdown.innerHTML = '<option>Carregando campanhas...</option>';
 
       try {
@@ -215,8 +226,9 @@
 
   function preencherPromptResumo() {
     const campanha = document.getElementById("resumoCampanhaSelect").value;
+    const dias = document.getElementById("diasResumo").value || 30;
     if (campanha) {
-      document.getElementById("prompt").value = `resumo ${campanha} nos últimos 30 dias`;
+      document.getElementById("prompt").value = `resumo ${campanha} nos últimos ${dias} dias`;
     }
   }
 
