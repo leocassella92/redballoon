@@ -55,7 +55,7 @@
         .example {
             font-size: 0.9rem;
             color: #555;
-            margin-top: 12px;
+            margin-top: 8px;
         }
         .input-group input {
             border-radius: 10px 0 0 10px;
@@ -66,6 +66,9 @@
         }
         .alert {
             font-size: 0.95rem;
+        }
+        .command-icon {
+            margin-right: 8px;
         }
     </style>
 </head>
@@ -81,17 +84,17 @@
                 </div>
                 <div class="comandos">
                     <strong>Comandos disponíveis:</strong>
-                    <ul class="mt-2">
-                        <li><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas.</li>
-                        <li><strong>Métricas da campanha:</strong> digite o nome da campanha seguido da data de início e fim ou "últimos 7 dias"/"últimos 30 dias".</li>
-                        <li><strong>Resumo da campanha:</strong> digite <code>resumo NomeDaCampanha nos últimos X dias</code> para gerar um resumo inteligente com dados e insights.</li>
+                    <ul class="mt-3">
+                        <li><span class="command-icon">📋</span><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas no momento.</li>
+                        <div class="example">Ex.: <code>listar campanhas</code></div>
+                        <br>
+                        <li><span class="command-icon">📊</span><strong>Métricas:</strong> retorna os dados da campanha, como alcance, cliques, resultados e custo, dentro de um período definido.</li>
+                        <div class="example">Ex.: <code>red balloon SP | 2025.1 | performance | lead | mkt4 últimos 7 dias</code><br>
+                        Ex.: <code>red balloon SP | 2025.1 | performance | lead | formulários nativos | mkt4 20/03/2025 27/03/2025</code></div>
+                        <br>
+                        <li><span class="command-icon">📝</span><strong>Resumo:</strong> gera um resumo inteligente da performance da campanha nos últimos X dias, com análise simplificada.</li>
+                        <div class="example">Ex.: <code>resumo Red Balloon SP nos últimos 30 dias</code></div>
                     </ul>
-                    <div class="example">
-                        <strong>Exemplos:</strong><br>
-                        <code>red balloon SP | 2025.1 | performance | lead | mkt4 últimos 7 dias</code><br>
-                        <code>red balloon SP | 2025.1 | performance | lead | formulários nativos | mkt4 20/03/2025 27/03/2025</code><br>
-                        <code>resumo Red Balloon SP nos últimos 30 dias</code>
-                    </div>
                 </div>
                 <div class="input-group my-4">
                     <input type="text" class="form-control" id="prompt" placeholder="Digite aqui sua solicitação...">
