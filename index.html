@@ -148,7 +148,7 @@
       campanhaDropdown.innerHTML = '<option>Carregando campanhas...</option>';
 
       try {
-        const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTzTuUXaQnCN4k5CUp31Ikt4L1Gnvu_aD5-SlB8zGZbYp0KjPYZ6O3BG9L7oDoIKrUvpcLz5Q1i5gxv/pub?output=csv");
+        const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTYoNwNyJRl39gKAXBhETNJoeBdqpw34VHFHlI9wOLkiV_rOZ94rEQHLIQMkjeCIiQmp2nBnwZRzlhH/pub?gid=0&single=true&output=csv");
         const texto = await response.text();
         const linhas = texto.split("\n").slice(1);
         const campanhas = [...new Set(linhas.map(l => l.split(",")[0]).filter(Boolean))];
