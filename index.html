@@ -36,6 +36,11 @@
             font-weight: 700;
             margin-bottom: 20px;
         }
+        .logo-img {
+            display: block;
+            margin: 0 auto 15px;
+            height: 60px;
+        }
         #resposta {
             margin-top: 20px;
             font-size: 1rem;
@@ -83,13 +88,14 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-6">
-            <div class="card">
-                <h2 class="text-center">🤖 Agente Red Balloon</h2>
-                <div class="mb-3">
+            <div class="card text-center">
+                <img src="https://static.vecteezy.com/ti/vetor-gratis/t1/3813447-icone-de-balao-vermelho-gratis-vetor.jpg" alt="Red Balloon Logo" class="logo-img">
+                <h2 class="mb-4">Agente Red Balloon</h2>
+                <div class="mb-3 text-start">
                     <label for="senha" class="form-label"><strong>Insira sua senha</strong></label>
                     <input type="password" class="form-control" id="senha" placeholder="Digite a senha de acesso">
                 </div>
-                <div class="comandos">
+                <div class="comandos text-start">
                     <strong>Comandos disponíveis:</strong>
                     <ul class="mt-3">
                         <li><span class="command-icon">📋</span><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas no momento.</li>
