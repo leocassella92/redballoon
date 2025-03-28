@@ -20,6 +20,7 @@
       box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
       padding: 40px;
       background-color: #ffffff;
+      width: 100%;
     }
     .btn-primary {
       background-color: #FF3B3F;
@@ -31,61 +32,24 @@
       background-color: #e22e32;
       transform: translateY(-2px);
     }
-    h2 {
-      color: #FF3B3F;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-    .logo-img {
-      display: block;
-      margin: 0 auto 15px;
-      height: 60px;
-    }
-    #resposta {
-      margin-top: 20px;
-      font-size: 1rem;
-    }
-    .comandos {
+    #chatBox {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 15px;
+      max-height: 300px;
+      overflow-y: auto;
       margin-top: 20px;
       font-size: 0.95rem;
-      color: #333;
-      background-color: #fff0f0;
-      padding: 20px;
-      border-radius: 15px;
-      border-left: 5px solid #FF3B3F;
+      text-align: left;
     }
-    .comandos strong {
-      color: #c73232;
+    #chatBox .mensagem {
+      margin-bottom: 10px;
     }
-    .example {
-      font-size: 0.9rem;
-      color: #555;
-      margin-top: 8px;
-    }
-    .input-group input {
-      border-radius: 10px 0 0 10px;
-      border-right: none;
-    }
-    .input-group button {
-      border-radius: 0 10px 10px 0;
-    }
-    .alert {
-      font-size: 0.95rem;
-    }
-    .command-icon {
-      margin-right: 8px;
-    }
-    .btn-link-planilha {
-      display: inline-block;
-      margin-top: 12px;
-      font-size: 0.9rem;
+    #chatBox .mensagem.usuario {
       font-weight: bold;
     }
-    #campanhaContainer,
-    #datasMetricas,
-    #resumoSelect,
-    #resumoDiasBox {
-      display: none;
+    #chatBox .mensagem.resposta {
+      color: #333;
     }
   </style>
 </head>
@@ -97,88 +61,67 @@
       <div class="card text-center">
         <img src="https://static.vecteezy.com/ti/vetor-gratis/t1/3813447-icone-de-balao-vermelho-gratis-vetor.jpg" alt="Red Balloon Logo" class="logo-img">
         <h2 class="mb-4">Agente Red Balloon</h2>
-        <div class="mb-3 text-start">
-          <label for="senha" class="form-label"><strong>Insira sua senha</strong></label>
-          <input type="password" class="form-control" id="senha" placeholder="Digite a senha de acesso">
-        </div>
-        <div class="mb-3 text-start">
-          <label for="comandoSelect" class="form-label"><strong>Selecione um comando</strong></label>
-          <select class="form-select" id="comandoSelect" onchange="preencherPrompt()">
-            <option value="">-- Escolha um comando --</option>
-            <option value="Listar Campanhas">Listar Campanhas</option>
-            <option value="métricas">Métricas</option>
-            <option value="resumo">Resumo</option>
-          </select>
-        </div>
-        <div class="mb-3 text-start" id="campanhaContainer">
+        <input type="password" class="form-control mb-3" id="senha" placeholder="Digite a senha de acesso">
+
+        <select class="form-select mb-3" id="comandoSelect" onchange="preencherPrompt()">
+          <option value="">-- Escolha um comando --</option>
+          <option value="Listar Campanhas">Listar Campanhas</option>
+          <option value="métricas">Métricas</option>
+          <option value="resumo">Resumo</option>
+        </select>
+
+        <div id="campanhaContainer" class="mb-3 text-start" style="display:none">
           <select class="form-select" id="campanhaSelect" onchange="mostrarDatasMetricas()"></select>
         </div>
-        <div class="mb-3 text-start" id="resumoSelect">
+
+        <div id="resumoSelect" class="mb-3 text-start" style="display:none">
           <select class="form-select" id="resumoCampanhaSelect" onchange="preencherPromptResumo()"></select>
         </div>
-        <div class="mb-3 text-start" id="resumoDiasBox">
-          <label class="form-label"><strong>Resumo dessa campanha dos últimos:</strong></label>
+
+        <div id="resumoDiasBox" class="mb-3 text-start" style="display:none">
+          <label><strong>Resumo dessa campanha dos últimos:</strong></label>
           <div class="input-group">
             <input type="number" class="form-control" id="diasResumo" min="1" max="90" value="30" onchange="preencherPromptResumo()">
             <span class="input-group-text"><strong>dias</strong></span>
           </div>
         </div>
-        <div class="row mb-3 text-start" id="datasMetricas">
+
+        <div class="row mb-3 text-start" id="datasMetricas" style="display:none">
           <div class="col">
-            <label for="dataInicio" class="form-label">Data Início</label>
+            <label>Data Início</label>
             <input type="date" class="form-control" id="dataInicio">
           </div>
           <div class="col">
-            <label for="dataFim" class="form-label">Data Fim</label>
+            <label>Data Fim</label>
             <input type="date" class="form-control" id="dataFim">
           </div>
         </div>
+
         <div class="input-group my-3">
           <input type="text" class="form-control" id="prompt" placeholder="Digite aqui sua solicitação...">
           <button class="btn btn-primary" onclick="enviarPrompt()">Enviar</button>
         </div>
-        <div id="resposta" class="text-center"></div>
-        <div class="comandos text-start mt-4">
-          <strong>Comandos disponíveis:</strong>
-          <ul class="mt-3">
-            <li><span class="command-icon">📋</span><strong>Listar Campanhas:</strong> retorna todas as campanhas ativas no momento.</li>
-            <div class="example">Ex.: <code>listar campanhas</code></div>
-            <br>
-            <li><span class="command-icon">📊</span><strong>Métricas:</strong> retorna os dados da campanha, como alcance, cliques, resultados e custo, dentro de um período definido.</li>
-            <div class="example">Ex.: <code>red balloon SP | 2025.1 | performance | lead | mkt4 últimos 7 dias</code><br>
-              Ex.: <code>red balloon SP | 2025.1 | performance | lead | formulários nativos | mkt4 20/03/2025 27/03/2025</code></div>
-            <br>
-            <li><span class="command-icon">📝</span><strong>Resumo:</strong> gera um resumo inteligente da performance da campanha nos últimos X dias, com análise simplificada.</li>
-            <div class="example">Ex.: <code>resumo red balloon BR | 2025.1 | performance | lead | formulários nativos | mkt4 nos últimos 30 dias</code></div>
-            <div class="example">Ex.: <code>resumo campanhas BR nos últimos 7 dias</code></div>
-            <div class="example">Ex.: <code>resumo campanhas SP nos últimos 30 dias</code></div>
-          </ul>
-        </div>
+
+        <div id="chatBox"></div>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function mostrarDatasMetricas() {
-    const datas = document.getElementById("datasMetricas");
-    datas.style.display = 'flex';
-    atualizarComandoMetricas();
-  }
+  function adicionarMensagem(usuario, texto) {
+    const chatBox = document.getElementById("chatBox");
+    const divUsuario = document.createElement("div");
+    divUsuario.className = "mensagem usuario";
+    divUsuario.textContent = `🧑‍💻 ${usuario}`;
 
-  function atualizarComandoMetricas() {
-    const campanha = document.getElementById("campanhaSelect").value;
-    const dataInicio = document.getElementById("dataInicio").value;
-    const dataFim = document.getElementById("dataFim").value;
-    if (campanha && dataInicio && dataFim) {
-      const formatar = data => {
-        const [ano, mes, dia] = data.split("-");
-        return `${dia}/${mes}/${ano}`;
-      };
-      const inicioFormatado = formatar(dataInicio);
-      const fimFormatado = formatar(dataFim);
-      document.getElementById("prompt").value = `métricas ${campanha} ${inicioFormatado} ${fimFormatado}`;
-    }
+    const divResposta = document.createElement("div");
+    divResposta.className = "mensagem resposta";
+    divResposta.textContent = texto;
+
+    chatBox.appendChild(divUsuario);
+    chatBox.appendChild(divResposta);
+    chatBox.scrollTop = chatBox.scrollHeight;
   }
 
   async function preencherPrompt() {
@@ -211,18 +154,10 @@
           const colunas = l.split(",");
           return [colunas[0], colunas[1]].filter(Boolean);
         }))];
-
         campanhas.push("Todas as campanhas BR", "Todas as campanhas SP");
-
         dropdown.innerHTML = campanhas.map(c => `<option value="${c}">${c}</option>`).join("");
       } catch (e) {
         dropdown.innerHTML = '<option>Erro ao carregar campanhas</option>';
-      }
-
-      if (!isResumo) {
-        dropdown.addEventListener("change", mostrarDatasMetricas);
-        document.getElementById("dataInicio").addEventListener("change", atualizarComandoMetricas);
-        document.getElementById("dataFim").addEventListener("change", atualizarComandoMetricas);
       }
     } else {
       prompt.value = select.value;
@@ -244,14 +179,12 @@
   async function enviarPrompt() {
     const prompt = document.getElementById('prompt').value.toLowerCase();
     const senha = document.getElementById('senha').value;
-    const resposta = document.getElementById('resposta');
-
     if (!senha) {
-      resposta.innerHTML = `<div class="alert alert-danger">❌ Digite a senha de acesso.</div>`;
+      alert("Digite a senha de acesso.");
       return;
     }
 
-    resposta.innerHTML = '<div class="spinner-border text-danger" role="status"></div>';
+    adicionarMensagem("Você:", prompt);
 
     try {
       const resultado = await fetch('https://redballoon.leocassella92.workers.dev', {
@@ -261,26 +194,10 @@
       });
 
       const data = await resultado.json();
-
-      let planilhaURL = "https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY/edit";
-
-      if (prompt.includes("listar campanhas")) {
-        planilhaURL += "#gid=0";
-      } else if (prompt.includes("resumo")) {
-        planilhaURL += "#gid=555612985";
-      } else if (prompt.includes("últimos") || /\d{2}\/\d{2}\/\d{4}/.test(prompt)) {
-        planilhaURL += "#gid=1815672070";
-      }
-
-      const botaoPlanilha = `<a href="${planilhaURL}" target="_blank" class="btn btn-outline-primary btn-sm btn-link-planilha">📄 Abrir planilha de resultados</a>`;
-
-      if (data.sucesso) {
-        resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br>${botaoPlanilha}</div>`;
-      } else {
-        resposta.innerHTML = `<div class="alert alert-danger">❌ Erro: ${data.erro}</div>`;
-      }
+      const textoResposta = data.sucesso ? data.mensagem : `❌ Erro: ${data.erro}`;
+      adicionarMensagem("Agente:", textoResposta);
     } catch (e) {
-      resposta.innerHTML = `<div class="alert alert-danger">❌ Erro inesperado: ${e.message}</div>`;
+      adicionarMensagem("Agente:", `❌ Erro inesperado: ${e.message}`);
     }
   }
 </script>
