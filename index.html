@@ -129,14 +129,16 @@
             const data = await resultado.json();
 
             if (data.sucesso) {
+                let linkPlanilha = '<br><a href="https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY" target="_blank">🔗 Abrir planilha de resultados</a>';
+
                 if (data.link) {
-                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br><a href="${data.link}" target="_blank">🔗 Abrir lista atualizada</a></div>`;
+                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br><a href="${data.link}" target="_blank">🔗 Abrir lista atualizada</a>${linkPlanilha}</div>`;
                 } else if (data.resumo) {
-                    resposta.innerHTML = `<div class="alert alert-info">${data.resumo}</div>`;
+                    resposta.innerHTML = `<div class="alert alert-info">${data.resumo}${linkPlanilha}</div>`;
                 } else if (data.mensagem) {
-                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}</div>`;
+                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}${linkPlanilha}</div>`;
                 } else {
-                    resposta.innerHTML = '<div class="alert alert-success">✅ Resposta recebida com sucesso!</div>';
+                    resposta.innerHTML = `<div class="alert alert-success">✅ Resposta recebida com sucesso!${linkPlanilha}</div>`;
                 }
             } else {
                 resposta.innerHTML = `<div class="alert alert-danger">❌ Erro: ${data.erro}</div>`;
