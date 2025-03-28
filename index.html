@@ -145,7 +145,7 @@
 
             if (data.sucesso) {
                 if (data.link) {
-                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br><a href="${data.link}" target="_blank">🔗 Abrir lista atualizada</a><br>${botaoPlanilha}</div>`;
+                    resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br>${botaoPlanilha}</div>`;
                 } else if (data.resumo) {
                     resposta.innerHTML = `<div class="alert alert-info">${data.resumo}<br>${botaoPlanilha}</div>`;
                 } else if (data.mensagem) {
