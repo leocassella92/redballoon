@@ -219,6 +219,50 @@
       document.getElementById("prompt").value = `resumo ${campanha} nos últimos 30 dias`;
     }
   }
+
+  async function enviarPrompt() {
+    const prompt = document.getElementById('prompt').value.toLowerCase();
+    const senha = document.getElementById('senha').value;
+    const resposta = document.getElementById('resposta');
+
+    if (!senha) {
+      resposta.innerHTML = `<div class="alert alert-danger">❌ Digite a senha de acesso.</div>`;
+      return;
+    }
+
+    resposta.innerHTML = '<div class="spinner-border text-danger" role="status"></div>';
+
+    try {
+      const resultado = await fetch('https://redballoon.leocassella92.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, password: senha })
+      });
+
+      const data = await resultado.json();
+
+      let planilhaURL = "https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY/edit";
+
+      if (prompt.includes("listar campanhas")) {
+        planilhaURL += "#gid=0";
+      } else if (prompt.includes("resumo")) {
+        planilhaURL += "#gid=555612985";
+      } else if (prompt.includes("últimos") || /\d{2}\/\d{2}\/\d{4}/.test(prompt)) {
+        planilhaURL += "#gid=1815672070";
+      }
+
+      const botaoPlanilha = `<a href="${planilhaURL}" target="_blank" class="btn btn-outline-primary btn-sm btn-link-planilha">📄 Abrir planilha de resultados</a>`;
+
+      if (data.sucesso) {
+        resposta.innerHTML = `<div class="alert alert-success">${data.mensagem}<br>${botaoPlanilha}</div>`;
+      } else {
+        resposta.innerHTML = `<div class="alert alert-danger">❌ Erro: ${data.erro}</div>`;
+      }
+    } catch (e) {
+      resposta.innerHTML = `<div class="alert alert-danger">❌ Erro inesperado: ${e.message}</div>`;
+    }
+  }
 </script>
+
 </body>
 </html>
