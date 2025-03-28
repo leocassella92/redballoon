@@ -121,7 +121,7 @@
 
 <script>
     async function enviarPrompt() {
-        const prompt = document.getElementById('prompt').value;
+        const prompt = document.getElementById('prompt').value.toLowerCase();
         const senha = document.getElementById('senha').value;
         const resposta = document.getElementById('resposta');
 
@@ -141,7 +141,17 @@
 
             const data = await resultado.json();
 
-            const botaoPlanilha = '<a href="https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY" target="_blank" class="btn btn-outline-primary btn-sm btn-link-planilha">📄 Abrir planilha de resultados</a>';
+            let planilhaURL = "https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY/edit";
+
+            if (prompt.includes("listar campanhas")) {
+                planilhaURL += "#gid=0";
+            } else if (prompt.includes("resumo")) {
+                planilhaURL += "#gid=555612985";
+            } else if (prompt.includes("últimos") || /\d{2}\/\d{2}\/\d{4}/.test(prompt)) {
+                planilhaURL += "#gid=1815672070";
+            }
+
+            const botaoPlanilha = `<a href="${planilhaURL}" target="_blank" class="btn btn-outline-primary btn-sm btn-link-planilha">📄 Abrir planilha de resultados</a>`;
 
             if (data.sucesso) {
                 if (data.link) {
