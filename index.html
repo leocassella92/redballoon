@@ -81,7 +81,7 @@
       font-size: 0.9rem;
       font-weight: bold;
     }
-    #campanhaSelect,
+    #campanhaContainer,
     #datasMetricas,
     #resumoSelect {
       display: none;
@@ -176,6 +176,7 @@
           return [colunas[0], colunas[1]].filter(Boolean);
         }))];
         campanhaDropdown.innerHTML = campanhas.map(c => `<option value="${c}">${c}</option>`).join("");
+        campanhaDropdown.onchange = mostrarDatasMetricas;
       } catch (e) {
         campanhaDropdown.innerHTML = '<option>Erro ao carregar campanhas</option>';
       }
