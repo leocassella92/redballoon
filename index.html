@@ -82,7 +82,8 @@
       font-weight: bold;
     }
     #campanhaSelect,
-    #datasMetricas {
+    #datasMetricas,
+    #resumoInputs {
       display: none;
     }
   </style>
@@ -105,11 +106,11 @@
             <option value="">-- Escolha um comando --</option>
             <option value="Listar Campanhas">Listar Campanhas</option>
             <option value="métricas">Métricas</option>
-            <option value="resumo NomeDaCampanha nos últimos X dias">Resumo</option>
+            <option value="resumo">Resumo</option>
           </select>
         </div>
         <div class="mb-3 text-start" id="campanhaContainer">
-          <select class="form-select" id="campanhaSelect" onchange="mostrarDatasMetricas()"></select>
+          <select class="form-select" id="campanhaSelect" onchange="manipularSubInputs()"></select>
         </div>
         <div class="row mb-3 text-start" id="datasMetricas">
           <div class="col">
@@ -120,6 +121,13 @@
             <label for="dataFim" class="form-label">Data Fim</label>
             <input type="date" class="form-control" id="dataFim">
           </div>
+        </div>
+        <div class="row mb-3 align-items-end text-start" id="resumoInputs">
+          <div class="col-auto fw-bold">Resumo dessa campanha dos últimos</div>
+          <div class="col-2">
+            <input type="number" class="form-control" id="diasResumo" min="1" placeholder="Ex: 30" oninput="atualizarResumoPrompt()">
+          </div>
+          <div class="col-auto fw-bold">dias</div>
         </div>
         <div class="input-group my-3">
           <input type="text" class="form-control" id="prompt" placeholder="Digite aqui sua solicitação...">
@@ -147,55 +155,54 @@
 
 <script>
   async function preencherPrompt() {
-    const select = document.getElementById("comandoSelect");
-    const prompt = document.getElementById("prompt");
-    const campanhaDropdown = document.getElementById("campanhaSelect");
+    const select = document.getElementById("comandoSelect").value;
+    const campanhaSelect = document.getElementById("campanhaSelect");
     const campanhaContainer = document.getElementById("campanhaContainer");
     const datas = document.getElementById("datasMetricas");
+    const resumoBox = document.getElementById("resumoInputs");
 
+    campanhaSelect.innerHTML = '';
+    campanhaContainer.style.display = 'none';
     datas.style.display = 'none';
+    resumoBox.style.display = 'none';
+    document.getElementById("prompt").value = "";
 
-    if (select.value === "métricas") {
-      campanhaDropdown.style.display = 'block';
+    if (select === "métricas" || select === "resumo") {
       campanhaContainer.style.display = 'block';
-      prompt.value = "";
-      campanhaDropdown.innerHTML = '<option>Carregando campanhas...</option>';
-
+      campanhaSelect.innerHTML = '<option>Carregando campanhas...</option>';
       try {
         const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTYoNwNyJRl39gKAXBhETNJoeBdqpw34VHFHlI9wOLkiV_rOZ94rEQHLIQMkjeCIiQmp2nBnwZRzlhH/pub?gid=0&single=true&output=csv");
         const texto = await response.text();
         const linhas = texto.split("\n").slice(1);
-        const campanhas = [...new Set(
-          linhas.flatMap(l => {
-            const colunas = l.split(",");
-            return [colunas[0], colunas[1]].filter(Boolean);
-          })
-        )];
-        campanhaDropdown.innerHTML = campanhas.map(c => `<option value="${c}">${c}</option>`).join("");
+        const campanhas = [...new Set(linhas.flatMap(l => {
+          const colunas = l.split(",");
+          return [colunas[0], colunas[1]].filter(Boolean);
+        }))];
+        campanhaSelect.innerHTML = campanhas.map(c => `<option value="${c}">${c}</option>`).join("");
       } catch (e) {
-        campanhaDropdown.innerHTML = '<option>Erro ao carregar campanhas</option>';
-      }
-    } else {
-      campanhaContainer.style.display = 'none';
-      datas.style.display = 'none';
-      if (select.value !== "") {
-        prompt.value = select.value;
-      } else {
-        prompt.value = "";
+        campanhaSelect.innerHTML = '<option>Erro ao carregar campanhas</option>';
       }
     }
   }
 
-  function mostrarDatasMetricas() {
-    const datas = document.getElementById("datasMetricas");
+  function manipularSubInputs() {
+    const tipo = document.getElementById("comandoSelect").value;
     const campanha = document.getElementById("campanhaSelect").value;
-    const prompt = document.getElementById("prompt");
-    datas.style.display = 'flex';
+    const datas = document.getElementById("datasMetricas");
+    const resumoBox = document.getElementById("resumoInputs");
 
-    document.getElementById("dataInicio").addEventListener("change", atualizarComandoMetricas);
-    document.getElementById("dataFim").addEventListener("change", atualizarComandoMetricas);
+    if (tipo === "métricas") {
+      datas.style.display = 'flex';
+      resumoBox.style.display = 'none';
+      document.getElementById("dataInicio").addEventListener("change", atualizarComandoMetricas);
+      document.getElementById("dataFim").addEventListener("change", atualizarComandoMetricas);
+    }
 
-    atualizarComandoMetricas();
+    if (tipo === "resumo") {
+      datas.style.display = 'none';
+      resumoBox.style.display = 'flex';
+      atualizarResumoPrompt();
+    }
   }
 
   function atualizarComandoMetricas() {
@@ -212,6 +219,14 @@
       const fimFormatado = formatar(dataFim);
 
       document.getElementById("prompt").value = `métricas ${campanha} ${inicioFormatado} ${fimFormatado}`;
+    }
+  }
+
+  function atualizarResumoPrompt() {
+    const campanha = document.getElementById("campanhaSelect").value;
+    const dias = document.getElementById("diasResumo").value;
+    if (campanha && dias) {
+      document.getElementById("prompt").value = `resumo ${campanha} nos últimos ${dias} dias`;
     }
   }
 
