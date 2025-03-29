@@ -233,11 +233,11 @@
     const campanha = document.getElementById("resumoCampanhaSelect").value;
     const dias = document.getElementById("diasResumo").value || 30;
     if (campanha === "Todas as campanhas BR") {
-      document.getElementById("prompt").value = resumo campanhas br nos últimos ${dias} dias;
+      document.getElementById("prompt").value = `resumo campanhas br nos últimos ${dias} dias`;
     } else if (campanha === "Todas as campanhas SP") {
-      document.getElementById("prompt").value = resumo campanhas sp nos últimos ${dias} dias;
+      document.getElementById("prompt").value = `resumo campanhas sp nos últimos ${dias} dias`;
     } else {
-      document.getElementById("prompt").value = resumo ${campanha} nos últimos ${dias} dias;
+      document.getElementById("prompt").value = `resumo ${campanha} nos últimos ${dias} dias`;
     }
   }
 
@@ -247,7 +247,7 @@
     const resposta = document.getElementById('resposta');
 
     if (!senha) {
-      resposta.innerHTML = <div class="alert alert-danger">❌ Digite a senha de acesso.</div>;
+      resposta.innerHTML = `<div class="alert alert-danger">❌ Digite a senha de acesso.</div>`;
       return;
     }
 
