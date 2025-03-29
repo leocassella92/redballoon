@@ -15,14 +15,15 @@
         const response = await fetch('https://redballoon.pages.dev/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: comando, password: '123rb' })
+          body: JSON.stringify({ prompt: comando }) // senha removida
         });
 
+        const rawText = await response.text();
         let json;
         try {
-          json = await response.json();
+          json = JSON.parse(rawText);
         } catch (e) {
-          chat.innerHTML += `<div><strong>Erro:</strong> Resposta inválida do servidor.</div>`;
+          chat.innerHTML += `<div><strong>Erro:</strong> Resposta inválida do servidor.<br><pre>${rawText}</pre></div>`;
           return;
         }
 
