@@ -18,7 +18,14 @@
           body: JSON.stringify({ prompt: comando, password: '123rb' })
         });
 
-        const json = await response.json();
+        let json;
+        try {
+          json = await response.json();
+        } catch (e) {
+          chat.innerHTML += `<div><strong>Erro:</strong> Resposta inválida do servidor.</div>`;
+          return;
+        }
+
         if (json.sucesso) {
           let linkMsg = '';
           if (comando.toLowerCase().includes('listar campanhas')) {
