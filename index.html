@@ -91,7 +91,6 @@
 </head>
 <body>
 
-
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-6">
@@ -160,14 +159,12 @@
   </div>
 </div>
 
-
 <script>
   function mostrarDatasMetricas() {
     const datas = document.getElementById("datasMetricas");
     datas.style.display = 'flex';
     atualizarComandoMetricas();
   }
-
 
   function atualizarComandoMetricas() {
     const campanha = document.getElementById("campanhaSelect").value;
@@ -184,7 +181,6 @@
     }
   }
 
-
   async function preencherPrompt() {
     const select = document.getElementById("comandoSelect");
     const prompt = document.getElementById("prompt");
@@ -193,13 +189,11 @@
     const diasBox = document.getElementById("resumoDiasBox");
     const datas = document.getElementById("datasMetricas");
 
-
     campanhaContainer.style.display = 'none';
     resumoContainer.style.display = 'none';
     diasBox.style.display = 'none';
     datas.style.display = 'none';
     prompt.value = "";
-
 
     if (select.value === "métricas" || select.value === "resumo") {
       const isResumo = select.value === "resumo";
@@ -208,7 +202,6 @@
       container.style.display = 'block';
       if (isResumo) diasBox.style.display = 'block';
       dropdown.innerHTML = '<option>Carregando campanhas...</option>';
-
 
       try {
         const response = await fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vTYoNwNyJRl39gKAXBhETNJoeBdqpw34VHFHlI9wOLkiV_rOZ94rEQHLIQMkjeCIiQmp2nBnwZRzlhH/pub?gid=0&single=true&output=csv");
@@ -219,15 +212,12 @@
           return [colunas[0], colunas[1]].filter(Boolean);
         }))];
 
-
         campanhas.push("Todas as campanhas BR", "Todas as campanhas SP");
-
 
         dropdown.innerHTML = campanhas.map(c => <option value="${c}">${c}</option>).join("");
       } catch (e) {
         dropdown.innerHTML = '<option>Erro ao carregar campanhas</option>';
       }
-
 
       if (!isResumo) {
         dropdown.addEventListener("change", mostrarDatasMetricas);
@@ -238,7 +228,6 @@
       prompt.value = select.value;
     }
   }
-
 
   function preencherPromptResumo() {
     const campanha = document.getElementById("resumoCampanhaSelect").value;
@@ -252,21 +241,17 @@
     }
   }
 
-
   async function enviarPrompt() {
     const prompt = document.getElementById('prompt').value.toLowerCase();
     const senha = document.getElementById('senha').value;
     const resposta = document.getElementById('resposta');
-
 
     if (!senha) {
       resposta.innerHTML = <div class="alert alert-danger">❌ Digite a senha de acesso.</div>;
       return;
     }
 
-
     resposta.innerHTML = '<div class="spinner-border text-danger" role="status"></div>';
-
 
     try {
       const resultado = await fetch('https://redballoon.leocassella92.workers.dev', {
@@ -275,12 +260,9 @@
         body: JSON.stringify({ prompt, password: senha })
       });
 
-
       const data = await resultado.json();
 
-
       let planilhaURL = "https://docs.google.com/spreadsheets/d/1fFDMFTp2OPVi2QopLJvbqIpSMe0THELoROnm0_UZlkY/edit";
-
 
       if (prompt.includes("listar campanhas")) {
         planilhaURL += "#gid=0";
@@ -290,9 +272,7 @@
         planilhaURL += "#gid=1815672070";
       }
 
-
       const botaoPlanilha = <a href="${planilhaURL}" target="_blank" class="btn btn-outline-primary btn-sm btn-link-planilha">📄 Abrir planilha de resultados</a>;
-
 
       if (data.sucesso) {
         resposta.innerHTML = <div class="alert alert-success">${data.mensagem}<br>${botaoPlanilha}</div>;
@@ -305,8 +285,5 @@
   }
 </script>
 
-
 </body>
 </html>
-
-
