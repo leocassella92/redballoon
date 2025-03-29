@@ -154,6 +154,15 @@
             <div class="example">Ex.: <code>resumo campanhas SP nos últimos 30 dias</code></div>
           </ul>
         </div>
+        <!-- NOVO BLOCO DE CHAT -->
+<div id="chatContainer" class="text-start mt-4">
+  <h5 class="mb-3">💬 Chat com o agente</h5>
+  <div id="chatMensagens" style="max-height: 250px; overflow-y: auto; background-color: #f8f8f8; border-radius: 10px; padding: 15px;"></div>
+  <div class="input-group mt-3">
+    <input type="text" id="mensagemChat" class="form-control" placeholder="Digite sua mensagem...">
+    <button class="btn btn-primary" onclick="enviarMensagemChat()">Enviar</button>
+  </div>
+</div>
       </div>
     </div>
   </div>
@@ -281,6 +290,54 @@
       }
     } catch (e) {
       resposta.innerHTML = <div class="alert alert-danger">❌ Erro inesperado: ${e.message}</div>;
+    }
+  }
+</script>
+<script>
+  async function enviarMensagemChat() {
+    const senha = document.getElementById("senha").value;
+    const msg = document.getElementById("mensagemChat").value;
+    const chat = document.getElementById("chatMensagens");
+
+    if (!senha || !msg) return;
+
+    // Exibir mensagem do usuário
+    const userMsg = document.createElement("div");
+    userMsg.className = "chat-msg msg-user align-self-end";
+    userMsg.innerText = "Você: " + msg;
+    chat.appendChild(userMsg);
+
+    // Limpar campo
+    document.getElementById("mensagemChat").value = "";
+
+    // Carregando...
+    const loadingMsg = document.createElement("div");
+    loadingMsg.className = "chat-msg msg-agente";
+    loadingMsg.innerText = "Agente está pensando...";
+    chat.appendChild(loadingMsg);
+    chat.scrollTop = chat.scrollHeight;
+
+    try {
+      const res = await fetch('https://redballoon.leocassella92.workers.dev', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: msg, password: senha })
+      });
+
+      const data = await res.json();
+      loadingMsg.remove();
+
+      const agenteMsg = document.createElement("div");
+      agenteMsg.className = "chat-msg msg-agente";
+      agenteMsg.innerText = data.sucesso ? "Agente: " + data.mensagem : "Erro: " + data.erro;
+      chat.appendChild(agenteMsg);
+      chat.scrollTop = chat.scrollHeight;
+    } catch (err) {
+      loadingMsg.remove();
+      const erroMsg = document.createElement("div");
+      erroMsg.className = "chat-msg msg-agente";
+      erroMsg.innerText = "Erro inesperado: " + err.message;
+      chat.appendChild(erroMsg);
     }
   }
 </script>
