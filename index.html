@@ -192,7 +192,7 @@
 
   async function preencherPrompt() {
     const select = document.getElementById("comandoSelect");
-    const prompt = document.getElementById("prompt");
+    const campoPrompt = document.getElementById("prompt");
     const campanhaContainer = document.getElementById("campanhaContainer");
     const resumoContainer = document.getElementById("resumoSelect");
     const diasBox = document.getElementById("resumoDiasBox");
@@ -202,7 +202,7 @@
     resumoContainer.style.display = 'none';
     diasBox.style.display = 'none';
     datas.style.display = 'none';
-    prompt.value = "";
+    campoPrompt.value = "";
 
     if (select.value === "métricas" || select.value === "resumo") {
       const isResumo = select.value === "resumo";
@@ -234,7 +234,7 @@
         document.getElementById("dataFim").addEventListener("change", atualizarComandoMetricas);
       }
     } else {
-      prompt.value = select.value.toLowerCase();
+      campoPrompt.value = select.value.toLowerCase();
     }
   }
 
