@@ -176,19 +176,19 @@
   }
 
   function atualizarComandoMetricas() {
-    const campanha = document.getElementById("campanhaSelect").value;
-    const dataInicio = document.getElementById("dataInicio").value;
-    const dataFim = document.getElementById("dataFim").value;
-    if (campanha && dataInicio && dataFim) {
-      const formatar = data => {
-        const [ano, mes, dia] = data.split("-");
-        return ${dia}/${mes}/${ano};
-      };
-      const inicioFormatado = formatar(dataInicio);
-      const fimFormatado = formatar(dataFim);
-      document.getElementById("prompt").value = métricas ${campanha} ${inicioFormatado} ${fimFormatado};
-    }
+  const campanha = document.getElementById("campanhaSelect").value;
+  const dataInicio = document.getElementById("dataInicio").value;
+  const dataFim = document.getElementById("dataFim").value;
+  if (campanha && dataInicio && dataFim) {
+    const formatar = data => {
+      const [ano, mes, dia] = data.split("-");
+      return `${dia}/${mes}/${ano}`;
+    };
+    const inicioFormatado = formatar(dataInicio);
+    const fimFormatado = formatar(dataFim);
+    document.getElementById("prompt").value = `métricas ${campanha} ${inicioFormatado} ${fimFormatado}`;
   }
+}
 
   async function preencherPrompt() {
     const select = document.getElementById("comandoSelect");
@@ -239,16 +239,16 @@
   }
 
   function preencherPromptResumo() {
-    const campanha = document.getElementById("resumoCampanhaSelect").value;
-    const dias = document.getElementById("diasResumo").value || 30;
-    if (campanha === "Todas as campanhas BR") {
-      document.getElementById("prompt").value = resumo campanhas br nos últimos ${dias} dias;
-    } else if (campanha === "Todas as campanhas SP") {
-      document.getElementById("prompt").value = resumo campanhas sp nos últimos ${dias} dias;
-    } else {
-      document.getElementById("prompt").value = resumo ${campanha} nos últimos ${dias} dias;
-    }
+  const campanha = document.getElementById("resumoCampanhaSelect").value;
+  const dias = document.getElementById("diasResumo").value || 30;
+  if (campanha === "Todas as campanhas BR") {
+    document.getElementById("prompt").value = `resumo campanhas br nos últimos ${dias} dias`;
+  } else if (campanha === "Todas as campanhas SP") {
+    document.getElementById("prompt").value = `resumo campanhas sp nos últimos ${dias} dias`;
+  } else {
+    document.getElementById("prompt").value = `resumo ${campanha} nos últimos ${dias} dias`;
   }
+}
 
   async function enviarPrompt() {
     const prompt = document.getElementById('prompt').value.toLowerCase();
