@@ -15,7 +15,7 @@
         const response = await fetch('https://redballoon.pages.dev/', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ prompt: comando }) // senha removida
+          body: JSON.stringify({ prompt: comando, password: '123rb' })
         });
 
         const rawText = await response.text();
