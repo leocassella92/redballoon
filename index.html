@@ -223,7 +223,7 @@
 
         campanhas.push("Todas as campanhas BR", "Todas as campanhas SP");
 
-        dropdown.innerHTML = campanhas.map(c => <option value="${c}">${c}</option>).join("");
+        dropdown.innerHTML = campanhas.map(c => `<option value="${c}">${c}</option>`).join("");
       } catch (e) {
         dropdown.innerHTML = '<option>Erro ao carregar campanhas</option>';
       }
